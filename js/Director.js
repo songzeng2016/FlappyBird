@@ -51,6 +51,7 @@ export class Director {
         const birds = this.dataStore.get('birds');
         const land = this.dataStore.get('land');
         const pencils = this.dataStore.get('pencils');
+        const score = this.dataStore.get('score');
 
         if (birds.birdsY[0] + birds.birdsHeight[0] > land.y) {
             this.isGameOver = true;
@@ -59,8 +60,8 @@ export class Director {
 
         // 小鸟的模型
         const birdsBorder = {
-            top: birds.y[0],
-            bottom: birds.y[0] + birds.birdsHeight[0],
+            top: birds.birdsY[0],
+            bottom: birds.birdsY[0] + birds.birdsHeight[0],
             left: birds.birdsX[0],
             right: birds.birdsX[0] + birds.birdsWidth[0]
         };
@@ -82,6 +83,15 @@ export class Director {
             }
         }
 
+        // 加分逻辑
+        if (birds.birdsX[0] > pencils[0].x + pencils[0].width
+            && score.isScore) {
+            score.isScore = false;
+            score.scoreNumber++;
+        }
+        // if (birds.birdsX[0] < pencils[0].x + pencils[0].width) {
+        //     score.isScore = true;
+        // }
     }
 
 
@@ -96,18 +106,21 @@ export class Director {
                 && pencils.length === 4) {
                 pencils.shift();
                 pencils.shift();
+                this.dataStore.get('score').isScore = true;
             }
 
             // 第一组铅笔走到屏幕中央且只有一组的时候再创建一组铅笔
             if (pencils[0].x < (window.innerWidth - pencils[0].width) / 2
                 && pencils.length === 2) {
                 this.createPencil();
+                // this.dataStore.get('score').scoreNumber++;
             }
 
             this.dataStore.get('pencils').forEach(function (value) {
                 value.draw();
             });
             this.dataStore.get('land').draw();
+            this.dataStore.get('score').draw();
             this.dataStore.get('birds').draw();
 
             let timer = requestAnimationFrame(() => this.run());

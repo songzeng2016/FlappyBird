@@ -6,6 +6,7 @@ import {Director} from "./js/Director.js";
 import {Land} from "./js/runtime/Land.js";
 import {Birds} from "./js/player/Birds.js";
 import {StartButton} from "./js/player/StartButton.js";
+import {Score} from "./js/player/Score.js";
 
 export class Main {
 
@@ -36,6 +37,7 @@ export class Main {
             .put('background', BackGround)
             .put('land', Land)
             .put('birds', Birds)
+            .put('score', Score)
             .put('startButton', StartButton);
 
         this.registerEvent();
